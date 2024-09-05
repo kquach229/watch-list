@@ -5,6 +5,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 const AuthForm = () => {
   const supabase = createClientComponentClient();
+  // update
   return (
     <Auth
       supabaseClient={supabase}
