@@ -4,7 +4,10 @@ import { Auth } from '@supabase/auth-ui-react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 const AuthForm = () => {
-  const supabase = createClientComponentClient();
+  const supabase = createClientComponentClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
   // update
   return (
     <Auth
