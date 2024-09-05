@@ -1,13 +1,19 @@
 'use server';
 
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-
+import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 
-import { cookies } from 'next/headers';
+export async function deleteWatch(
+  formData: FormData
+): Promise<{ message: string } | void> {
+  const id = formData.get('id') as string; // Cast to string since FormData.get returns FormDataEntryValue | null
 
-export async function deleteWatch(formData) {
-  const watchId = formData.get('id');
+  if (!id) {
+    console.error('ID is required for deleting watch');
+    return;
+  }
+
   const cookiesStore = cookies();
   const supabase = createServerComponentClient({ cookies: () => cookiesStore });
 
@@ -18,14 +24,15 @@ export async function deleteWatch(formData) {
   const user = session?.user;
 
   if (!user) {
-    console.error('user is not authenticated within deleteWatch server action');
+    console.error('User is not authenticated within deleteWatch server action');
     return;
   }
 
-  const { data, error } = await supabase.from('watches').delete().match({
-    id: watchId,
-    user_id: user.id,
-  });
+  const { data, error } = await supabase
+    .from('watches')
+    .delete()
+    .match({ id, user_id: user.id });
+
   if (error) {
     console.error('Error deleting data:', error);
     return;
