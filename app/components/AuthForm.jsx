@@ -12,7 +12,7 @@ const AuthForm = () => {
       view='magic_link'
       showLinks={false}
       providers={[]}
-      redirectTo='https://watch-list-ctcl.vercel.app/auth/callback'
+      redirectTo={process.env.NEXT_PUBLIC_SUPABASE_REDIRECT}
       appearance={{
         theme: 'dark',
         button: {
