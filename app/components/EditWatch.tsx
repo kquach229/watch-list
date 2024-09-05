@@ -1,16 +1,29 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { updateWatch } from '../server-actions/updateWatch';
 
-const EditWatch = ({ watch }) => {
+// Define the type for the watch prop
+interface Watch {
+  id: string;
+  brand: string;
+  model: string;
+  reference_number: string; // Matches the field in the database
+}
+
+interface EditWatchProps {
+  watch: Watch;
+}
+
+const EditWatch: React.FC<EditWatchProps> = ({ watch }) => {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     brand: watch.brand,
     model: watch.model,
-    referenceNumber: watch.reference_number,
+    referenceNumber: watch.reference_number, // Aligns with reference_number field in database
   });
 
-  const handleChange = (e) => {
+  // Define type for the event in handleChange
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 

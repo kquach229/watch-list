@@ -5,14 +5,28 @@ import { cookies } from 'next/headers';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { deleteWatch } from '../server-actions/deleteWatch';
 
+// Define the type for a watch
+interface Watch {
+  id: string;
+  brand: string;
+  model: string;
+  reference_number: string;
+}
+
 const WatchList = async () => {
   const cookieStore = cookies();
   const supabase = createServerComponentClient({ cookies: () => cookieStore });
+
   const {
     data: { session },
   } = await supabase.auth.getSession();
 
   const user = session?.user;
+
+  if (!user) {
+    console.error('User not authenticated');
+    return <div className='text-red-500'>Error: User not authenticated.</div>;
+  }
 
   const { data: watches, error } = await supabase
     .from('watches')
@@ -21,7 +35,8 @@ const WatchList = async () => {
     .order('brand', { ascending: true });
 
   if (error) {
-    console.error('error fetching watches:', error);
+    console.error('Error fetching watches:', error);
+    return <div className='text-red-500'>Error fetching watches</div>;
   }
 
   return (
@@ -39,7 +54,7 @@ const WatchList = async () => {
         </div>
         <WatchForm />
         <div className='space-y-6'>
-          {watches.map((watch) => (
+          {watches?.map((watch: Watch) => (
             <div
               key={watch.id}
               className='bg-teal-600 p-4 rounded-lg shadow-md'>
