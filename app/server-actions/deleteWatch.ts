@@ -23,6 +23,7 @@ export async function deleteWatch(
 
   const user = session?.user;
 
+  // console log error is no user
   if (!user) {
     console.error('User is not authenticated within deleteWatch server action');
     return;
