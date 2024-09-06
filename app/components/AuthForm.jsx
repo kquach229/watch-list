@@ -15,7 +15,7 @@ const AuthForm = () => {
       view='magic_link'
       showLinks={false}
       providers={[]}
-      redirectTo={process.env.NEXT_PUBLIC_SUPABASE_REDIRECT}
+      redirectTo={'https://www.nba.com/'}
       appearance={{
         theme: 'dark',
         button: {
